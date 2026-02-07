@@ -110,6 +110,28 @@ def main(
     hparams = params_class.from_json(params_path)
     if not (run_dir / "params.json").exists():
         shutil.copyfile(params_path, run_dir / "params.json")
+
+
+    
+    # -------------------------------------------------------------------------
+    # NEW CODE: Save the run arguments (experiment config) to args.json
+    # -------------------------------------------------------------------------
+    args_to_save = {
+        "alg_name": alg_name,
+        "model_name": model_name,
+        "hparams_fname": hparams_fname,
+        "ds_name": ds_name,
+        "dataset_size_limit": dataset_size_limit,
+        "skip_generation_tests": skip_generation_tests,
+        "generation_test_interval": generation_test_interval,
+        "conserve_memory": conserve_memory,
+        "dir_name": dir_name,
+        "num_edits": num_edits,
+        "use_cache": use_cache,
+    }
+    
+    with open(run_dir / "args.json", "w") as f:
+        json.dump(args_to_save, f, indent=4)
     print(f"Executing {alg_name} with parameters {hparams}")
 
     # Instantiate vanilla model
